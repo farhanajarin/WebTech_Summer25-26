@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Portfolio</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: 0.5s;
+        }
+
+        .dark-mode{
+            background-color: #222;
+            color: white;
+        }
+
+        header{
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+        }
+
+        nav button{
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        section{
+            display: none;
+            padding: 20px;
+        }
+
+        .active{
+            display: block;
+        }
+
+        input, textarea{
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .error{
+            color: red;
+            font-size: 14px;
+        }
+
+        #themeBtn{
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>My Portfolio</h1>
+        <h2 id="greeting"></h2>
+
+        <button id="themeBtn" onclick="toggleTheme()">
+            Dark/Light Mode
+        </button>
+    </header>
+
+    <nav>
+        <button onclick="showSection('about')">About</button>
+        <button onclick="showSection('projects')">Projects</button>
+        <button onclick="showSection('contact')">Contact</button>
+    </nav>
+
+    
+    <section id="about" class="active">
+        <h2>About Me</h2>
+        <p>Hello! I am a Web Technology student.</p>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <p>Portfolio Website</p>
+        <p>Student Management System</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+
+        <form onsubmit="return validateForm()">
+
+            <input type="text" id="name" placeholder="Enter Name">
+            <div id="nameError" class="error"></div>
+
+            <input type="text" id="email" placeholder="Enter Email">
+            <div id="emailError" class="error"></div>
+
+            <textarea id="message" placeholder="Enter Message"></textarea>
+            <div id="messageError" class="error"></div>
+
+            <button type="submit">Submit</button>
+
+        </form>
+    </section>
+
+    <script>
+
+        function toggleTheme(){
+            document.body.classList.toggle("dark-mode");
+        }
+
+        var hour = new Date().getHours();
+        var greet = "";
+
+        if(hour < 12){
+            greet = "Good Morning";
+        }
+        else if(hour < 18){
+            greet = "Good Afternoon";
+        }
+        else{
+            greet = "Good Evening";
+        }
+
+        document.getElementById("greeting").innerHTML = greet;
+
+        function showSection(id){
+
+            var sections = document.querySelectorAll("section");
+
+            sections.forEach(function(sec){
+                sec.classList.remove("active");
+            });
+
+            document.getElementById(id).classList.add("active");
+        }
+
+        function validateForm(){
+
+            var name = document.getElementById("name").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var message = document.getElementById("message").value.trim();
+
+            var valid = true;
+
+            document.getElementById("nameError").innerHTML = "";
+            document.getElementById("emailError").innerHTML = "";
+            document.getElementById("messageError").innerHTML = "";
+
+            if(name === ""){
+                document.getElementById("nameError").innerHTML =
+                "Name cannot be empty";
+                valid = false;
+            }
+
+            var emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if(!emailPattern.test(email)){
+                document.getElementById("emailError").innerHTML =
+                "Invalid Email";
+                valid = false;
+            }
+
+            if(message.length < 10){
+                document.getElementById("messageError").innerHTML =
+                "Message must be at least 10 characters";
+                valid = false;
+            }
+
+            if(valid){
+                alert("Form Submitted Successfully!");
+            }
+
+            return valid;
+        }
+
+    </script>
+
+</body>
+</html>
